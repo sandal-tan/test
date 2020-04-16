@@ -25,14 +25,15 @@ jobs:
               labelDescs.push(label.description)
             }
 
-            await github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Add a time estimate you goon!'
-            })
+            console.log(labelNames)
 
             if  (labelNames.includes('task')) {
               if (!labelDescs.includes('Task Size Label')) {
+                await github.issues.createComment({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: 'Add a time estimate you goon!'
+                })
               }
             }
