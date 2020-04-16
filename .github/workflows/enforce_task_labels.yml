@@ -11,8 +11,8 @@ jobs:
           script: |
             // Get the labels for the labeled issue
             const labels = github.issues.listLabelsOnIssue({
-              issue_number: context.issue.number
-              owner: context.repo.owner
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
               repo: context.repo.repo
             })
 
