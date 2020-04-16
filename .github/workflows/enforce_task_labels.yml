@@ -21,6 +21,8 @@ jobs:
             const labelDescs = []
 
             for (label of labels) {
+              console.log(label.name)
+              console.log(label.description)
               labelNames.push(label.name)
               labelDescs.push(label.description)
             }
