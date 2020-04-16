@@ -24,3 +24,9 @@ jobs:
               labelNames.push(label.name)
               labelDescs.push(label.description)
             }
+
+            if  (labelNames.includes('task')) {
+              if not (labelDesc.includes('Task Size Label')) {
+                throw new Error()
+              }
+            }
