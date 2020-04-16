@@ -1,0 +1,36 @@
+on:
+  issue:
+    types:
+      - labeled
+
+jobs:
+  check_labels:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@0.9.0
+        with:
+          github-token: ${{secrets.FACELESS_TOKEN}}
+          script: |
+            // Get the labels for the labeled issue
+            const labels = github.issues.listLabelsOnIssue({
+              issue_number: context.issue.number
+              owner: context.repo.owner
+              repo: context.repo.repo
+            })
+
+            const labelNames = labels.map(function (label) {
+              return label.name
+            })
+
+            const labelDesc = labels.map(function (label) {
+              return label.description
+            })
+
+            // If the `task` label was added, fail if we don't have the following:
+            // - A label starting `time: `
+            // - A label starting with `sev: `
+            if  (labelNames.includes('task')) {
+              if not (labelDesc.includes('Task Size Label')) {
+                throw new Error()
+              }
+            }
