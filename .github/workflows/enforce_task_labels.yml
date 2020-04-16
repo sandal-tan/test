@@ -26,7 +26,12 @@ jobs:
             }
 
             if  (labelNames.includes('task')) {
-              if not (labelDesc.includes('Task Size Label')) {
-                throw new Error()
+              if (!labelDescs.includes('Task Size Label')) {
+                await github.issues.createComment({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: 'Add a time estimate you goon!'
+                })
               }
             }
