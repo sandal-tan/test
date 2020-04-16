@@ -1,7 +1,5 @@
 on:
-  issues:
-    types:
-      - labeled
+  issues: {types: labeled}
 
 jobs:
   check_labels:
