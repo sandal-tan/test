@@ -40,6 +40,8 @@ jobs:
               const currentColumnResp = await github.projects.getColumn({
                 column_id: currentColumnId
               })
-              console.log(currentColumnResp)
-              console.log('We have an invalid task!')
+              const currentColumn = currentColumnResp.data
+              if (currentColumn.name != 'To do') {
+                console.log('Invalid task outside of To do') 
+              }
             }
