@@ -14,6 +14,8 @@ jobs:
           github-token: ${{secrets.FACELESS_TOKEN}}
           script: |
             // Get the issue from the context
+            // This is going to trigger another run of this code
+            // if we have to move a card back
             const issue_url = context.payload.project_card.content_url
             const card_id = context.payload.project_card.id
             var path = require('path')
@@ -27,8 +29,6 @@ jobs:
 
             const labels = labelResp.data
 
-            console.log(context)
-
             var labelNames = []
             for (label of labels) {
               labelNames.push(label.name)
@@ -39,13 +39,14 @@ jobs:
               const currentColumnResp = await github.projects.getColumn({
                 column_id: currentColumnId
               })
+
               const changes = context.payload.changes
               const currentColumn = currentColumnResp.data
+
               if (currentColumn.name != 'To do') {
                 // This is hacky, but let's assume that that the invalid tasks are only
                 // ever moved from the `To do` column so changes.column_id.from
                 // Will be the column to move it to
-                console.log('Invalid task outside of To do') 
                 await github.projects.moveCard({
                   card_id: card_id,
                   position: 'top',
