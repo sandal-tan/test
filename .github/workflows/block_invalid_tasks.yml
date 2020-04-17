@@ -13,4 +13,8 @@ jobs:
         with:
           github-token: ${{secrets.FACELESS_TOKEN}}
           script: |
-            console.log(context)
+            // Get the issue from the context
+            const issue_url = context.payload.project_card.content_url
+            var path = require('path')
+            const issue_number = path.basename(issue_url)
+            console.log(issue_number)
