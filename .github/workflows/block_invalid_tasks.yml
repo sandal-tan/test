@@ -3,7 +3,7 @@ name: Block Invalid Tasks
 on:
   project_card: 
     types:
-      - labeled
+      - moved
 
 jobs:
   block-invalid-task:
