@@ -26,12 +26,10 @@ jobs:
 
             const labels = labelResp.data
 
-            console.log(labels)
             console.log(context)
 
             var labelNames = []
             for (label of labels) {
-              console.log(label)
               labelNames.push(label.name)
             }
 
@@ -40,6 +38,7 @@ jobs:
               const currentColumnResp = await github.projects.getColumn({
                 column_id: currentColumnId
               })
+              console.log(changes)
               const currentColumn = currentColumnResp.data
               if (currentColumn.name != 'To do') {
                 console.log('Invalid task outside of To do') 
