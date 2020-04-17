@@ -2,6 +2,13 @@
 
 I like the automatability of GitHub Projects and want to see if I can easily automate the flow I have in mind
 
+# Proposed Flow
+
+* We don't really care about epics, we can just group stories by labels instead
+* Stories are GitHub Issues and describe high level goals, not directly worked on
+* Milestones represent a sprint
+* Tasks are PRs and linked back to stories (issues)
+
 # Todo
 
 - [x] Mark tasks without a time and prioritization as invalid
