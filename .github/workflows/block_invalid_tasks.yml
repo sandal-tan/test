@@ -25,3 +25,14 @@ jobs:
             })
 
             console.log(labels)
+            console.log(context)
+
+            var labelNames = []
+            for (label of labels) {
+              console.log(label)
+              labelNames.push(label.name)
+            }
+
+            if  (labelNames.includes('task') && labelNames.includes('invalid')) {
+              console.log('We have an invalid task!')
+            }
