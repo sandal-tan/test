@@ -15,6 +15,7 @@ jobs:
           script: |
             // Get the issue from the context
             const issue_url = context.payload.project_card.content_url
+            const card_id = context.payload.project_card.card_id
             var path = require('path')
             const issue_number = path.basename(issue_url)
 
@@ -38,9 +39,17 @@ jobs:
               const currentColumnResp = await github.projects.getColumn({
                 column_id: currentColumnId
               })
-              console.log(context.payload.changes)
+              const changes = context.payload.changes
               const currentColumn = currentColumnResp.data
               if (currentColumn.name != 'To do') {
+                // This is hacky, but let's assume that that the invalid tasks are only
+                // ever moved from the `To do` column so changes.column_id.from
+                // Will be the column to move it to
                 console.log('Invalid task outside of To do') 
+                await github.projects.moveCard({
+                  card_id: card_id,
+                  position: 'top',
+                  column_id: changes.column_id.from
+                })
               }
             }
