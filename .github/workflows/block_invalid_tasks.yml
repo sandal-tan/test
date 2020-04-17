@@ -14,7 +14,7 @@ jobs:
           github-token: ${{secrets.FACELESS_TOKEN}}
           script: |
             // Get the issue from the context
-            const issue_url = context.project_card.content_url
+            const issue_url = context.payload.project_card.content_url
             var path = require('path')
             const issue_number = path.basename(issue_url)
 
@@ -36,7 +36,7 @@ jobs:
             }
 
             if  (labelNames.includes('task') && labelNames.includes('invalid')) {
-              const currentColumnId = context.project_card.column_id
+              const currentColumnId = context.payload.project_card.column_id
               const currentColumnResp = await github.projects.getColumn({
                 column_id: currentColumnId
               })
