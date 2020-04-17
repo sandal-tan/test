@@ -8,6 +8,7 @@ I like the automatability of GitHub Projects and want to see if I can easily aut
 * Stories are GitHub Issues and describe high level goals, not directly worked on
 * Milestones represent a sprint
 * Tasks are PRs and linked back to stories (issues)
+* How do I create a PR and a branch from an issue
 
 # Todo
 
