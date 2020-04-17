@@ -1,3 +1,5 @@
+name: Block Invalid Tasks
+
 on:
   project_card: 
     types:
