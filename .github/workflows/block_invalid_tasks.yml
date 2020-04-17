@@ -15,7 +15,7 @@ jobs:
           script: |
             // Get the issue from the context
             const issue_url = context.payload.project_card.content_url
-            const card_id = context.payload.project_card.card_id
+            const card_id = context.payload.project_card.id
             var path = require('path')
             const issue_number = path.basename(issue_url)
 
