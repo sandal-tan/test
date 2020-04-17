@@ -51,6 +51,8 @@ jobs:
               const ref = refResp.data
               const masterSha = ref.object.sha
               console.log(masterSha)
+              const refName = `refs/heads/issue-${issue_number}:${issue.title.replace(' ', '_')}`
+              console.log(refName)
 
               if (false) {
                 await github.git.createRef({
