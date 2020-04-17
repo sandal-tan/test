@@ -18,7 +18,7 @@ jobs:
             var path = require('path')
             const issue_number = path.basename(issue_url)
 
-            const labels await github.issues.listLabelsOnIssue({
+            const labels = await github.issues.listLabelsOnIssue({
               issue_number: issue_number,
               owner: context.repo.owner,
               repo: context.repo.repo
