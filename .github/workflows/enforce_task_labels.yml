@@ -21,13 +21,10 @@ jobs:
             const labelDescs = []
 
             for (label of labels) {
-              console.log(label.name)
-              console.log(label.description)
+              console.log(label)
               labelNames.push(label.name)
               labelDescs.push(label.description)
             }
-
-            console.log(labelNames)
 
             if  (labelNames.includes('task')) {
               if (!labelDescs.includes('Task Size Label')) {
