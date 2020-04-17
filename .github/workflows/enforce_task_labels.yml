@@ -9,15 +9,14 @@ jobs:
         with:
           github-token: ${{secrets.FACELESS_TOKEN}}
           script: |
-            const opts = await github.issues.listLabelsOnIssue({
+            const labelsResp = await github.issues.listLabelsOnIssue({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo
             })
 
-            console.log(opts)
 
-            const labels = await github.paginate(opts)
+            const labels = labelsResp.data
 
             const labelNames = []
             const labelDescs = []
