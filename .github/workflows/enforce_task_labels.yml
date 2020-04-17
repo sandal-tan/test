@@ -9,7 +9,7 @@ jobs:
         with:
           github-token: ${{secrets.FACELESS_TOKEN}}
           script: |
-            const opts = github.issues.listLabelsOnIssue({
+            const opts = await github.issues.listLabelsOnIssue({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo
