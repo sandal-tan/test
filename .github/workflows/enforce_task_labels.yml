@@ -2,7 +2,7 @@ on:
   issues: {types: labeled}
 
 jobs:
-  comment:
+  lint-task-labels:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@0.9.0
