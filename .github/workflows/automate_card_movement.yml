@@ -53,4 +53,60 @@ jobs:
                   column_id: changes.column_id.from
                 })
               }
+            }  
+  create-issue-branch:
+    needs: block-invalid-issue
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@0.9.0
+        with:
+          github-token: ${{secrets.FACELESS_TOKEN}}
+          script: |
+            // Get the issue from the context
+            // This is going to trigger another run of this code
+            // if we have to move a card back
+            const issue_url = context.payload.project_card.content_url
+            var path = require('path')
+            const issue_number = path.basename(issue_url)
+
+            const labelResp = await github.issues.listLabelsOnIssue({
+              issue_number: issue_number,
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            })
+
+            const labels = labelResp.data
+
+            var labelNames = []
+            for (label of labels) {
+              labelNames.push(label.name)
+            }
+
+            if  (labelNames.includes('task') && !labelNames.includes('invalid')) {
+
+              // Make the reference name from the issue
+              const issueResp = await github.issues.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue_number
+              })
+              const issue = issueResp.data
+              // Get the latest SHA on master
+              const refResp = await github.git.getRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: 'heads/master'
+              })
+              const ref = refResp.data
+              const masterSha = ref.object.sha
+              console.log(masterSha)
+              const refName = `refs/heads/issue-${issue_number}_${issue.title.replace(' ', '_')}`
+              console.log(refName)
+
+              await github.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: refName,
+                sha: masterSha
+              })
             }
