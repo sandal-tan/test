@@ -126,7 +126,7 @@ jobs:
                 title: `Issue ${issue_number}: ${issue.title}`,
                 head: path.basename(refName),
                 base: 'master',
-                body: `Work to close #${issue_number}\n\n--- Task Body ---\n${issue.body}`
+                body: `Work to close #${issue_number}\n\n--- Task Body ---\n${issue.body}`,
                 draft: true
               })
             }
