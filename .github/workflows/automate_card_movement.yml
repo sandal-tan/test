@@ -52,6 +52,8 @@ jobs:
                   position: 'top',
                   column_id: changes.column_id.from
                 })
+
+                // Maybe we should fail the job here
               }
             }  
   create-issue-branch:
@@ -62,9 +64,6 @@ jobs:
         with:
           github-token: ${{secrets.FACELESS_TOKEN}}
           script: |
-            // Get the issue from the context
-            // This is going to trigger another run of this code
-            // if we have to move a card back
             const issue_url = context.payload.project_card.content_url
             var path = require('path')
             const issue_number = path.basename(issue_url)
@@ -84,29 +83,50 @@ jobs:
 
             if  (labelNames.includes('task') && !labelNames.includes('invalid')) {
 
-              // Make the reference name from the issue
-              const issueResp = await github.issues.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issue_number
+              const currentColumnId = context.payload.project_card.column_id
+              const currentColumnResp = await github.projects.getColumn({
+                column_id: currentColumnId
               })
-              const issue = issueResp.data
-              // Get the latest SHA on master
-              const refResp = await github.git.getRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: 'heads/master'
-              })
-              const ref = refResp.data
-              const masterSha = ref.object.sha
-              console.log(masterSha)
-              const refName = `refs/heads/issue-${issue_number}_${issue.title.replace(' ', '_')}`
-              console.log(refName)
 
-              await github.git.createRef({
+              const currentColumn = currentColumnResp.data
+
+              if  (currentColumn.name == 'In progress') {
+                // Make the reference name from the issue
+                const issueResp = await github.issues.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue_number
+                })
+                const issue = issueResp.data
+                // Get the latest SHA on master
+                const refResp = await github.git.getRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: 'heads/master'
+                })
+                const ref = refResp.data
+                const masterSha = ref.object.sha
+                console.log(masterSha)
+                const refName = `refs/heads/issue-${issue_number}_${issue.title.replace(' ', '_').toLowerCase()}`
+                console.log(refName)
+
+                // Create the branch
+                await github.git.createRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: refName,
+                  sha: masterSha
+                })
+              }
+
+              // Create the Pull Request
+              await github.pulls.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                ref: refName,
-                sha: masterSha
+                title: `Issue ${issue_number}: ${issue.title}`,
+                head: path.basename(refName),
+                base: 'master',
+                body: `Work to close #${issue_number}\n\n--- Task Body ---\n${issue.body}`
+                draft: true
               })
             }
