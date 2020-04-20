@@ -30,7 +30,7 @@ jobs:
 
                 // Get the To do column
                 const columnsResp = await github.projects.listColumns({
-                  project_id: sprintBoard.id
+                  project_id: board.id
                 })
 
                 const columns = columnsResp.data
@@ -42,7 +42,9 @@ jobs:
                       content_id: context.payload.issue.number,
                       content_type: 'Issue'
                     })
+                    break
                   }
                 }
+                break
               }
             }
