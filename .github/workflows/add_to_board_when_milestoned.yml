@@ -39,7 +39,7 @@ jobs:
                   if (column.name == 'To do') {
                     await github.projects.createCard({
                       column_id: column.id,
-                      content_id: context.payload.issue.number,
+                      content_id: context.payload.issue.id,
                       content_type: 'Issue'
                     })
                     break
