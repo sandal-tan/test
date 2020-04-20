@@ -16,5 +16,9 @@ I like the automatability of GitHub Projects and want to see if I can easily aut
 - [x] Keep invalid tasks in the To Do column of the sprint board
 - [x] Make a branch and draft PR for users when stories get moved to In progress -> https://octokit.github.io/rest.js/v17#git-create-ref
 - [ ] Open a draft PR on first commit to issue branch
-- [ ] If a task gets added to a milestone, also add it to the sprint board
+- [x] If a task gets added to a milestone, also add it to the sprint board
+- [ ] Create sprint milestone on a schedule
+- [ ] Close sprint milestones on a schedule
+- [ ] Archive all cards when their associated milestone is closed if they are in the `Done` column
+- [ ] Move unclosed issues in milestone (sprint) to next milestone (sprint)
 - [ ] Terraform for boards and labels

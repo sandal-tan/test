@@ -1,0 +1,23 @@
+name: Create Draft PR
+
+on:
+  push:
+    branches:
+      - 'issue-*'
+
+jobs:
+  create-draft-pr:
+    runs: ubuntu-latest
+    steps:
+      - uses: actions/github-script@0.9.0
+        with:
+          github-token: ${{secrets.FACELESS_TOKEN}}
+          script: |
+            const pullsListResp = await github.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              head: `${context.repo.owner}:${github.ref}`
+            })
+            const pullsList = pullsListResp.data
+            console.log(pullsList)
