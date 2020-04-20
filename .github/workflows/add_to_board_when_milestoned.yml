@@ -30,7 +30,7 @@ jobs:
 
                 // Get the To do column
                 const columnsResp = await github.projects.listColumns({
-                  project_id: sprintBoard.id,
+                  project_id: sprintBoard.id
                 })
 
                 const columns = columnsResp.data
@@ -38,7 +38,7 @@ jobs:
                 for (column of columns) {
                   if (column.name == 'To do') {
                     await github.projects.createCard({
-                      column_id: column.id
+                      column_id: column.id,
                       content_id: context.payload.issue.number,
                       content_type: 'Issue'
                     })
