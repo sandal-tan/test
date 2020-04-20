@@ -21,6 +21,11 @@ jobs:
               state: 'open',
               head: `${context.repo.owner}:${branch}`
             })
+
+            // We need to link the issue to the PR
+            const issueNumber = branch.split('_')[0].split('-')[1]
+            console.log(issueNumber)
+
             const pullsList = pullsListResp.data
             if (!pullsList.length) {
               await github.pulls.create({
