@@ -7,17 +7,42 @@ on:
 
 jobs:
   create-draft-pr:
-    runs: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@0.9.0
         with:
           github-token: ${{secrets.FACELESS_TOKEN}}
           script: |
+            var path = require('path')
+            const branch = path.basename('${{github.ref}}')
             const pullsListResp = await github.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              head: `${context.repo.owner}:${github.ref}`
+              head: `${context.repo.owner}:${branch}`
             })
+
+            // We need to link the issue to the PR
+            const issueNumber = branch.split('_')[0].split('-')[1]
+            console.log(issueNumber)
+
+            const issueGetResp = await github.issues.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber
+            })
+
+            const issueGet = issueGetResp.data
+
             const pullsList = pullsListResp.data
-            console.log(pullsList)
+            if (!pullsList.length) {
+              await github.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'Test Draft PR',
+                body: `Work to close #${issueNumber}\n\n--- Task Body --\n\n${issueGet.body}`,
+                head: branch,
+                base: 'master',
+                draft: true
+              })
+            }
