@@ -39,7 +39,7 @@ jobs:
               await github.pulls.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                title: 'Test Draft PR',
+                title: `PR: ${issueGet.title}`,
                 body: `Work to close #${issueNumber}\n\n--- Task Body --\n\n${issueGet.body}`,
                 head: branch,
                 base: 'master',
