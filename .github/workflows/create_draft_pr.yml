@@ -19,5 +19,7 @@ jobs:
               state: 'open',
               head: `${context.repo.owner}:${github.ref}`
             })
+            console.log(github.ref)
             const pullsList = pullsListResp.data
+
             console.log(pullsList)
