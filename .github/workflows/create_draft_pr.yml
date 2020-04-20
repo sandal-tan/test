@@ -13,14 +13,15 @@ jobs:
         with:
           github-token: ${{secrets.FACELESS_TOKEN}}
           script: |
+            var path = require('path')
+            const branch = path.basename('${{github.ref}}')
             const pullsListResp = await github.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              head: `${context.repo.owner}:${{github.ref}}`
+              head: `${context.repo.owner}:${branch}`
             })
             console.log(context)
-            console.log(${{github.ref}})
             const pullsList = pullsListResp.data
 
             console.log(pullsList)
