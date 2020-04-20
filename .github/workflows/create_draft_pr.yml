@@ -17,9 +17,10 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              head: `${context.repo.owner}:${github.ref}`
+              head: `${context.repo.owner}:${{github.ref}}`
             })
-            console.log(github.ref)
+            console.log(context)
+            console.log(${{github.ref}})
             const pullsList = pullsListResp.data
 
             console.log(pullsList)
