@@ -1,0 +1,16 @@
+name: Automate Card Movement
+
+on:
+  issues: 
+    types:
+      - milestoned
+
+jobs:
+  add-to-sprint-board:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@0.9.0
+        with:
+          github-token: ${{secrets.FACELESS_TOKEN}}
+          script: |
+            console.log(context)
