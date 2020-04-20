@@ -21,7 +21,15 @@ jobs:
               state: 'open',
               head: `${context.repo.owner}:${branch}`
             })
-            console.log(context)
             const pullsList = pullsListResp.data
-
-            console.log(pullsList)
+            if (!pullsList.length) {
+              await github.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'Test Draft PR',
+                body: 'Closes some issue',
+                head: branch,
+                base: 'master',
+                draft: true
+              })
+            }
