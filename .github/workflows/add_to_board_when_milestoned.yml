@@ -25,29 +25,23 @@ jobs:
             console.log(boards)
 
             // Get the sprint board
-            var sprintBoard = null
             for (board of boards) {
               if (board.name == 'Sprint Board') {
-                var sprintBoard = board
-                break
-              }
-            }
-
-            if (sprintBoard !=== null) {
-              // Get the To do column
-              const columnsResp = await github.projects.listColumns({
-                project_id: sprintBoard.id,
-              })
-              const columns = columnsResp.data
-              var toDoColumn = null
-              for (column of columns) {
-                if (column.name == 'To do') {
-                  await github.projects.createCard({
-                    column_id: column.id
-                    content_id: context.payload.issue.number,
-                    content_type: 'Issue'
-                  })
-                  break
+                // Get the To do column
+                const columnsResp = await github.projects.listColumns({
+                  project_id: sprintBoard.id,
+                })
+                const columns = columnsResp.data
+                for (column of columns) {
+                  if (column.name == 'To do') {
+                    await github.projects.createCard({
+                      column_id: column.id
+                      content_id: context.payload.issue.number,
+                      content_type: 'Issue'
+                    })
+                    break
+                  }
                 }
+                break
               }
             }
